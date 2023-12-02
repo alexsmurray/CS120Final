@@ -21,7 +21,7 @@ class Game(simpleGE.Scene):
         self.addButton()
         self.addMultiLabel()
         
-        self.sprites = [self.lblTitle, self.multi, self.btnStart, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.lblInput, self.lblHint, self.btnCheck, self.btnClear, self.lblAttempts, self.btnQuit]
+        self.sprites = [self.lblTitle, self.multi, self.btnStart, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.lblInput, self.lblHint, self.btnCheck, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnQuit]
         self.lblInput.hide()
         self.btnKeyA.hide()
         self.btnKeyB.hide()
@@ -35,6 +35,9 @@ class Game(simpleGE.Scene):
         self.btnClear.hide()
         self.lblHint.hide()
         self.lblAttempts.hide()
+        self.btnClue.hide()
+        self.multiClue.hide()
+        self.btnClueHide.hide()
         
     def addLabels(self):
         self.lblTitle = simpleGE.Label()
@@ -55,14 +58,23 @@ class Game(simpleGE.Scene):
         self.lblAttempts = simpleGE.Label()
         self.lblAttempts.center = (500, 80)
         self.lblAttempts.size = (150, 30)
+    
         
     def addButton(self):
         self.btnStart = simpleGE.Button()
         self.btnStart.text = "Start Game"
-        self.btnStart.center = (320, 420)
+        self.btnStart.center = (320, 440)
         
 
         self.btnReset = simpleGE.Button()
+        
+        self.btnClue = simpleGE.Button()
+        self.btnClue.text = "Clue"
+        self.btnClue.center = (100, 440)
+        
+        self.btnClueHide = simpleGE.Button()
+        self.btnClueHide.text = "Hide Clue"
+        self.btnClue.center = (100, 440)
         
         self.btnClear = simpleGE.Button()
         self.btnClear.text = "Clear"
@@ -125,6 +137,11 @@ class Game(simpleGE.Scene):
         self.multi.center = (325,245)
         self.multi.size = (550,300)
         
+        self.multiClue = simpleGE.MultiLabel()
+        #self.multiClue.text = []
+        self.multiClue.center = (325, 245)
+        self.multiClue.size = (550, 300)
+        
         
         
     def update(self):
@@ -144,7 +161,8 @@ class Game(simpleGE.Scene):
             self.lblInput.show((320,40))
             self.btnCheck.show((540,40))
             self.btnClear.show((100,40))
-            self.lblAttempts.show ((540, 80))
+            self.lblAttempts.show((540, 80))
+            self.btnClue.show((100, 440))
             self.counter = 3
             self.lblAttempts.text = "Attempts: " + str(self.counter)
             #placePuzzle()
@@ -178,6 +196,15 @@ class Game(simpleGE.Scene):
             self.lblHint.hide()
             self.lblInput.text = ""
             self.inputlen = 0
+        if self.btnClue.clicked:
+            self.multiClue.textLines = placePuzzle.solutionGuide
+            self.multiClue.show((325,245))
+            self.btnClue.hide()
+            self.btnClueHide.show((100, 440))
+        if self.btnClueHide.clicked:
+            self.multiClue.hide()
+            self.btnClueHide.hide()
+            self.btnClue.show((100,440))
         if self.btnCheck.clicked:
             self.lblHint.show((320,130))
             if self.lblInput.text == placePuzzle.solutionKey:
@@ -222,8 +249,13 @@ class placePuzzle():
             solution1[i] = "Gemma"
     print(solution1)
     print(solutionKey)
-    print(f"{solution1[1]} is not in last place.")
-        
+    solutionGuide = [
+        f"{solution1[1]} is not in last place.",
+        f"{solution1[2]} is beating {solution1[3]} but losing to {solution1[0]}",
+        f"{solution1[0]} is beating {solution1[1]}",
+        f"{solution1[3]} is not winning."
+        ]
+    print(solutionGuide)    
             
 class PianoKeys(simpleGE.SuperSprite):
     def __init__(self, scene):
