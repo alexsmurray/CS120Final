@@ -5,15 +5,17 @@ Music Puzzle Game
 Alexander Murray
 
 background https://creator.nightcafe.studio/studio?open=creation&panelContext=%28jobId%3A3obwZPuQlAGD4ZVIlkUS%29
+button sounds https://freesound.org/search/?f=grouping_pack:%2217749_Do%2C%20re%2C%20mi%2C%20fa%2C%20so%2C%20la%2C%20ti%2C%20do%22&s=Date+added+(newest+first)&g=1
 """
 
-import pygame, simpleGE, random
+import pygame, simpleGE, random, time
 
 class Game(simpleGE.Scene):
     solutionGuide = [""]
     solutionKey = ""
     simonKey = ""
     simonNum = 1
+   
     def __init__(self):
         simpleGE.Scene.__init__(self)
         self.background = pygame.image.load("organ1.jpg")
@@ -167,21 +169,25 @@ class Game(simpleGE.Scene):
         
         self.btnGreen = simpleGE.Button()
         self.btnGreen.text = "Green"
+        self.btnGreenSound = simpleGE.Sound("si.wav")
         self.btnGreen.size = (60, 40)
         self.btnGreen.center = (150 ,240)
         
         self.btnYellow = simpleGE.Button()
         self.btnYellow.text = "Yellow"
+        self.btnYellowSound = simpleGE.Sound("re.wav")
         self.btnYellow.size = (60, 40)
         self.btnYellow.center = (250, 240)
         
         self.btnBlue = simpleGE.Button()
         self.btnBlue.text = "Blue"
+        self.btnBlueSound = simpleGE.Sound("fa.wav")
         self.btnBlue.size = (60, 40)
         self.btnBlue.center = (350, 240)
         
         self.btnRed = simpleGE.Button()
         self.btnRed.text = "Red"
+        self.btnRedSound = simpleGE.Sound("do.wav")
         self.btnRed.size = (60, 40)
         self.btnRed.center = (450, 240)
         
@@ -254,6 +260,16 @@ class Game(simpleGE.Scene):
     def createSimon(self):
         simonList = ["G", "Y", "B", "R"]
         solution2 = random.choices(simonList, k = self.simonNum)
+        for x in range(len(solution2)):
+            time.sleep(.75)
+            if solution2[x] == "G":
+                self.btnGreenSound.play()
+            if solution2[x] == "Y":
+                self.btnYellowSound.play()
+            if solution2[x] == "B":
+                self.btnBlueSound.play()
+            if solution2[x] == "R":
+                self.btnRedSound.play()
         self.simonKey = "".join(solution2)
         print(self.simonKey)
         
@@ -343,12 +359,16 @@ class Game(simpleGE.Scene):
                 self.inputlen += 1
                 
         if self.btnGreen.clicked:
+            self.btnGreenSound.play()
             self.lblInputSimon.text += "G"
         if self.btnYellow.clicked:
+            self.btnYellowSound.play()
             self.lblInputSimon.text += "Y"
         if self.btnBlue.clicked:
+            self.btnBlueSound.play()
             self.lblInputSimon.text += "B"
         if self.btnRed.clicked:
+            self.btnRedSound.play()
             self.lblInputSimon.text += "R"
             
         
@@ -416,6 +436,7 @@ class PianoKeys(simpleGE.SuperSprite):
         super().__init__(scene)
         self.setImage("")
         self.setSize()
+        
         
         
         #self.setPosition(())
