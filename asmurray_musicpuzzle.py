@@ -10,6 +10,8 @@ background https://creator.nightcafe.studio/studio?open=creation&panelContext=%2
 import pygame, simpleGE, random
 
 class Game(simpleGE.Scene):
+    solutionGuide = [""]
+    solutionKey = ""
     def __init__(self):
         simpleGE.Scene.__init__(self)
         self.background = pygame.image.load("organ1.jpg")
@@ -21,7 +23,7 @@ class Game(simpleGE.Scene):
         self.addButton()
         self.addMultiLabel()
         
-        self.sprites = [self.lblTitle, self.multi, self.btnStart, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.lblInput, self.lblHint, self.btnCheck, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnQuit]
+        self.sprites = [self.lblTitle, self.multi, self.btnStart, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.lblInput, self.lblHint, self.btnCheck, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnReset, self.btnQuit]
         self.lblInput.hide()
         self.btnKeyA.hide()
         self.btnKeyB.hide()
@@ -38,6 +40,8 @@ class Game(simpleGE.Scene):
         self.btnClue.hide()
         self.multiClue.hide()
         self.btnClueHide.hide()
+        self.btnReset.hide()
+    
         
     def addLabels(self):
         self.lblTitle = simpleGE.Label()
@@ -67,6 +71,8 @@ class Game(simpleGE.Scene):
         
 
         self.btnReset = simpleGE.Button()
+        self.btnReset.text = "New Game"
+        self.btnReset.center = (320,440)
         
         self.btnClue = simpleGE.Button()
         self.btnClue.text = "Clue"
@@ -138,9 +144,41 @@ class Game(simpleGE.Scene):
         self.multi.size = (550,300)
         
         self.multiClue = simpleGE.MultiLabel()
-        #self.multiClue.text = []
         self.multiClue.center = (325, 245)
         self.multiClue.size = (550, 300)
+        
+    
+    def createKey(self):
+        keyList = ["A", "B", "C", "D", "E", "F", "G"]
+        solution1 = random.sample(keyList, 4) 
+        self.solutionKey = (f"{solution1[0]}{solution1[1]}{solution1[2]}{solution1[3]}")
+        for i in range(len(solution1)):
+            if solution1[i] == "A":
+                solution1[i] = "Alex"
+            if solution1[i] == "B":
+                solution1[i] = "Beth"
+            if solution1[i] == "C":
+                solution1[i] = "Charlie"
+            if solution1[i] == "D":
+                solution1[i] = "Daniel"
+            if solution1[i] == "E":
+                solution1[i] = "Elaine"
+            if solution1[i] == "F":
+                solution1[i] = "Fred"
+            if solution1[i] == "G":
+                solution1[i] = "Gemma"
+        print(solution1)
+        print(self.solutionKey)
+        self.solutionGuide = [
+            f"{solution1[1]} is not in last place.",
+            f"{solution1[2]} is beating {solution1[3]} but losing to {solution1[0]}.",
+            f"{solution1[0]} is beating {solution1[1]}.",
+            f"{solution1[3]} is not winning."
+            ]
+        print(self.solutionGuide)
+        
+    
+
         
         
         
@@ -165,7 +203,10 @@ class Game(simpleGE.Scene):
             self.btnClue.show((100, 440))
             self.counter = 3
             self.lblAttempts.text = "Attempts: " + str(self.counter)
-            #placePuzzle()
+            self.createKey()
+            
+            
+            
         if self.inputlen < 4:
             if self.btnKeyA.clicked:
                 #self.btnKeys.itemSound.play()
@@ -189,29 +230,36 @@ class Game(simpleGE.Scene):
             if self.btnKeyG.clicked:
                 self.lblInput.text += "G"
                 self.inputlen += 1
+                
         if self.btnReset.clicked:
             game = Game()
             game.start()
+            
+            
         if self.btnClear.clicked:
             self.lblHint.hide()
             self.lblInput.text = ""
             self.inputlen = 0
+            
         if self.btnClue.clicked:
-            self.multiClue.textLines = placePuzzle.solutionGuide
+            self.multiClue.textLines = self.solutionGuide
             self.multiClue.show((325,245))
             self.btnClue.hide()
             self.btnClueHide.show((100, 440))
+            
         if self.btnClueHide.clicked:
             self.multiClue.hide()
             self.btnClueHide.hide()
             self.btnClue.show((100,440))
+            
         if self.btnCheck.clicked:
             self.lblHint.show((320,130))
-            if self.lblInput.text == placePuzzle.solutionKey:
+            if self.lblInput.text == self.solutionKey:
                 print("You win!")
                 print(self.counter)
                 print(self.lblInput.text)
                 self.lblHint.text = "Congratulations! You win!"
+                self.btnReset.show((320,440))
             elif self.counter == 0:
                 print("You lose!")
                 self.lblHint.text = "You lose. Try again."
@@ -224,38 +272,11 @@ class Game(simpleGE.Scene):
                 print(self.counter)
                 print(self.lblInput.text)
                 self.lblHint.text = "Incorrect Response. Try Again"
+                
         if self.btnQuit.clicked:
             self.stop()
-            
-            
-class placePuzzle():
-    keyList = ["A", "B", "C", "D", "E", "F", "G"]
-    solution1 = random.sample(keyList, 4) 
-    solutionKey = (f"{solution1[0]}{solution1[1]}{solution1[2]}{solution1[3]}")
-    for i in range(len(solution1)):
-        if solution1[i] == "A":
-            solution1[i] = "Alex"
-        if solution1[i] == "B":
-            solution1[i] = "Beth"
-        if solution1[i] == "C":
-            solution1[i] = "Charlie"
-        if solution1[i] == "D":
-            solution1[i] = "Daniel"
-        if solution1[i] == "E":
-            solution1[i] = "Elaine"
-        if solution1[i] == "F":
-            solution1[i] = "Fred"
-        if solution1[i] == "G":
-            solution1[i] = "Gemma"
-    print(solution1)
-    print(solutionKey)
-    solutionGuide = [
-        f"{solution1[1]} is not in last place.",
-        f"{solution1[2]} is beating {solution1[3]} but losing to {solution1[0]}",
-        f"{solution1[0]} is beating {solution1[1]}",
-        f"{solution1[3]} is not winning."
-        ]
-    print(solutionGuide)    
+        
+
             
 class PianoKeys(simpleGE.SuperSprite):
     def __init__(self, scene):
