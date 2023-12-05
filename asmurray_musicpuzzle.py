@@ -171,10 +171,12 @@ class Game(simpleGE.Scene):
         print(self.solutionKey)
         self.solutionGuide = [
             f"{solution1[1]} is not in last place.",
-            f"{solution1[2]} is beating {solution1[3]} but losing to {solution1[0]}.",
+            f"{solution1[2]} is beating {solution1[3]}",
+            f"{solution1[2]} is losing to {solution1[0]}.",
             f"{solution1[0]} is beating {solution1[1]}.",
             f"{solution1[3]} is not winning."
             ]
+        self.solutionGuide = random.sample(self.solutionGuide, 5)
         print(self.solutionGuide)
         
     
