@@ -12,6 +12,7 @@ import pygame, simpleGE, random
 class Game(simpleGE.Scene):
     solutionGuide = [""]
     solutionKey = ""
+    simonKey = ""
     def __init__(self):
         simpleGE.Scene.__init__(self)
         self.background = pygame.image.load("organ1.jpg")
@@ -23,7 +24,10 @@ class Game(simpleGE.Scene):
         self.addButton()
         self.addMultiLabel()
         
-        self.sprites = [self.lblTitle, self.multi, self.btnStart, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.lblInput, self.lblHint, self.btnCheck, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnReset, self.btnQuit]
+        self.sprites = [self.btnPuzzle, self.lblTitle, self.multi, self.btnStart, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.lblInput, self.lblHint, self.btnCheck, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnReset, self.btnQuit]
+        self.lblTitle.hide()
+        self.btnStart.hide()
+        self.multi.hide()
         self.lblInput.hide()
         self.btnKeyA.hide()
         self.btnKeyB.hide()
@@ -68,6 +72,14 @@ class Game(simpleGE.Scene):
         self.btnStart = simpleGE.Button()
         self.btnStart.text = "Start Game"
         self.btnStart.center = (320, 440)
+        
+        self.btnPuzzle = simpleGE.Button()
+        self.btnPuzzle.text = "Puzzle Game"
+        self.btnPuzzle.center = (320, 220)
+        
+        self.btnSimon = simpleGE.Button()
+        self.btnSimon.text = "Simon Says"
+        self.btnSimon.center = (320, 320)
         
 
         self.btnReset = simpleGE.Button()
@@ -179,12 +191,28 @@ class Game(simpleGE.Scene):
         self.solutionGuide = random.sample(self.solutionGuide, 5)
         print(self.solutionGuide)
         
+        
+    def createSimon(self):
+        simonList = ["G", "Y", "B", "R"]
+        simonNum = 1
+        solution2 = random.choices(simonList, k = simonNum)
+        self.simonKey = "".join(solution2)
+        print(self.simonKey)
+        
     
 
         
         
         
     def update(self):
+        if self.btnPuzzle.clicked:
+            self.lblTitle.show((320, 40))
+            self.btnStart.show((320, 440))
+            self.multi.show((325,245))
+            self.btnPuzzle.hide()
+            self.createSimon()
+        
+        
         if self.btnStart.clicked:
             self.lblTitle.hide()
             self.btnStart.hide()
