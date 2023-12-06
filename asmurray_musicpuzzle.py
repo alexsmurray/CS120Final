@@ -30,7 +30,7 @@ class Game(simpleGE.Scene):
         self.addButton()
         self.addMultiLabel()
         
-        self.sprites = [self.btnPuzzle, self.btnSimon, self.lblTitleSimon, self.multiSimon, self.lblTitle, self.multi, self.btnStart, self.btnStartSimon, self.lblInputSimon, self.lblCurrentScore, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.btnGreen, self.btnRed, self.btnYellow, self.btnBlue, self.lblInput, self.lblHint, self.btnCheck, self.btnSimonSolve, self.lblHighscore, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnReset, self.btnQuit]
+        self.sprites = [self.btnPuzzle, self.btnSimon, self.lblTitleSimon, self.multiSimon, self.lblTitle, self.multi, self.btnStart, self.btnStartSimon, self.lblInputSimon, self.lblCurrentScore, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.btnSimonTrial, self.btnGreen, self.btnRed, self.btnYellow, self.btnBlue, self.lblInput, self.lblHint, self.btnCheck, self.btnSimonSolve, self.lblHighscore, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnReset, self.btnQuit]
         self.lblTitle.hide()
         self.btnStart.hide()
         self.multi.hide()
@@ -62,6 +62,7 @@ class Game(simpleGE.Scene):
         self.lblInputSimon.hide()
         self.lblHighscore.hide()
         self.lblCurrentScore.hide()
+        self.btnSimonTrial.hide()
     
         
     def addLabels(self):
@@ -82,8 +83,8 @@ class Game(simpleGE.Scene):
         
         self.lblInputSimon = simpleGE.Label()
         self.lblInputSimon.text = ""
-        self.lblInputSimon.size = (150, 30)
-        self.lblInputSimon.center = (320, 40)
+        self.lblInputSimon.size = (550, 30)
+        self.lblInputSimon.center = (320, 100)
         
         self.lblHint = simpleGE.Label()
         self.lblHint.text = ""
@@ -95,7 +96,7 @@ class Game(simpleGE.Scene):
         self.lblAttempts.size = (150, 30)
         
         self.lblCurrentScore = simpleGE.Label()
-        self.lblCurrentScore.text = str(self.currentScore)
+        self.lblCurrentScore.text = "Score: " + str(self.currentScore)
         self.lblCurrentScore.center = (500, 80)
         self.lblCurrentScore.size = (150, 30)
         
@@ -125,6 +126,9 @@ class Game(simpleGE.Scene):
         self.btnSimonSolve.text = "Solve"
         self.btnSimonSolve.center = (500, 30)
         
+        self.btnSimonTrial = simpleGE.Button()
+        self.btnSimonTrial.text = "Start Trial"
+        self.btnSimonTrial.center = (320, 440)
 
         self.btnReset = simpleGE.Button()
         self.btnReset.text = "New Game"
@@ -325,21 +329,27 @@ class Game(simpleGE.Scene):
             self.multiSimon.show((325, 245))
             
         if self.btnStartSimon.clicked:
+            self.lblTitleSimon.hide()
             self.btnSimon.hide()
             self.btnStartSimon.hide()
             self.multiSimon.hide()
             self.screen.blit(self.background, (0,0))
             self.btnQuit.show((540,440))
-            self.lblInputSimon.show((320,40))
-            self.lblHighscore.show((100, 80))
-            self.lblHighscore.text = self.highscore
-            self.lblCurrentScore.show((500, 80))
-            self.btnClear.show((100,40))
-            self.btnSimonSolve.show((540,40))
+            self.lblInputSimon.show((320,150))
+            self.lblHighscore.show((100, 40))
+            self.lblHighscore.text = "Highscore: " + self.highscore
+            self.lblCurrentScore.show((540, 40))
+            self.btnClear.show((100,80))
+            self.btnSimonSolve.show((540,80))
             self.btnGreen.show((150 ,240))
             self.btnYellow.show((250 ,240))
             self.btnBlue.show((350 ,240))
             self.btnRed.show((450 ,240))
+            self.btnSimonTrial.show((320,440))
+            #self.createSimon()
+            
+        if self.btnSimonTrial.clicked:
+            self.btnSimonTrial.hide()
             self.createSimon()
             
         
@@ -403,6 +413,12 @@ class Game(simpleGE.Scene):
         if self.btnRed.clicked:
             self.btnRedSound.play()
             self.lblInputSimon.text += "R"
+        """    
+        if self.isKeyPressed(pygame.K_1):
+            self.btnGreenSound.play()
+            self.lblInputSimon.text += "G"
+            """
+            
             
         
                 
