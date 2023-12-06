@@ -15,6 +15,9 @@ class Game(simpleGE.Scene):
     solutionKey = ""
     simonKey = ""
     simonNum = 1
+    currentScore = 0
+    highscore = "0"
+    highscoreInt = 0
    
     def __init__(self):
         simpleGE.Scene.__init__(self)
@@ -27,7 +30,7 @@ class Game(simpleGE.Scene):
         self.addButton()
         self.addMultiLabel()
         
-        self.sprites = [self.btnPuzzle, self.btnSimon, self.lblTitleSimon, self.multiSimon, self.lblTitle, self.multi, self.btnStart, self.btnStartSimon, self.lblInputSimon, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.btnGreen, self.btnRed, self.btnYellow, self.btnBlue, self.lblInput, self.lblHint, self.btnCheck, self.btnSimonSolve, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnReset, self.btnQuit]
+        self.sprites = [self.btnPuzzle, self.btnSimon, self.lblTitleSimon, self.multiSimon, self.lblTitle, self.multi, self.btnStart, self.btnStartSimon, self.lblInputSimon, self.lblCurrentScore, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.btnGreen, self.btnRed, self.btnYellow, self.btnBlue, self.lblInput, self.lblHint, self.btnCheck, self.btnSimonSolve, self.lblHighscore, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnReset, self.btnQuit]
         self.lblTitle.hide()
         self.btnStart.hide()
         self.multi.hide()
@@ -57,6 +60,8 @@ class Game(simpleGE.Scene):
         self.btnBlue.hide()
         self.btnRed.hide()
         self.lblInputSimon.hide()
+        self.lblHighscore.hide()
+        self.lblCurrentScore.hide()
     
         
     def addLabels(self):
@@ -88,6 +93,15 @@ class Game(simpleGE.Scene):
         self.lblAttempts = simpleGE.Label()
         self.lblAttempts.center = (500, 80)
         self.lblAttempts.size = (150, 30)
+        
+        self.lblCurrentScore = simpleGE.Label()
+        self.lblCurrentScore.text = str(self.currentScore)
+        self.lblCurrentScore.center = (500, 80)
+        self.lblCurrentScore.size = (150, 30)
+        
+        self.lblHighscore = simpleGE.Label()
+        self.lblHighscore.center = (100, 80)
+        self.lblHighscore.size = (150, 30)
     
         
     def addButton(self):
@@ -273,6 +287,21 @@ class Game(simpleGE.Scene):
         self.simonKey = "".join(solution2)
         print(self.simonKey)
         
+        
+    def getHighScore(self):
+        score = open("simonHS.txt", "r")
+        self.highscore = score.read()
+        if self.highscore == "":
+            self.highscore = "0"
+        self.highscoreInt = int(self.highscore)
+        score.close()
+        
+    def saveHighScore(self):
+        score = open("simonHS.txt", "w")
+        if self.currentScore > self.highscoreInt:
+            score.write(str(self.currentScore))
+        score.close()
+        
     
 
         
@@ -288,6 +317,7 @@ class Game(simpleGE.Scene):
             
             
         if self.btnSimon.clicked:
+            self.getHighScore()
             self.btnSimon.hide()
             self.btnPuzzle.hide()
             self.btnStartSimon.show((320, 440))
@@ -301,6 +331,9 @@ class Game(simpleGE.Scene):
             self.screen.blit(self.background, (0,0))
             self.btnQuit.show((540,440))
             self.lblInputSimon.show((320,40))
+            self.lblHighscore.show((100, 80))
+            self.lblHighscore.text = self.highscore
+            self.lblCurrentScore.show((500, 80))
             self.btnClear.show((100,40))
             self.btnSimonSolve.show((540,40))
             self.btnGreen.show((150 ,240))
@@ -399,11 +432,14 @@ class Game(simpleGE.Scene):
         if self.btnSimonSolve.clicked:
             if self.lblInputSimon.text == self.simonKey:
                 self.lblInputSimon.text = ""
+                self.lblCurrentScore.text = str(self.simonNum)
+                self.currentScore += 1
                 self.simonNum += 1
                 self.createSimon()
             else:
                 self.lblHint.show((320, 440))
                 self.lblHint.text = "You Lose!"
+                self.saveHighScore()
             
         if self.btnCheck.clicked:
             self.lblHint.show((320,130))
