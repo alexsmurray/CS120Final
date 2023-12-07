@@ -32,4 +32,20 @@ Things I learned:
   Various other techniques learned in class.
 
 Where I got stuck:
-  
+  I had to figure out how to generate random solutions for both games. I started with the puzzle game and I was able to find a way to create a 4 note solution, however, this method did not work well with the Simon game since it did not reuse notes. I was able to come up with another solution for this.
+  I also got stuck on making lights flicker for my buttons in the Simon game.
+
+What would I like to improve:
+  Adding difficulties to both games and increasing speeds to the Simon game.
+  Fixing the lights for the Simon game.
+  Add new puzzles to the puzzle game.
+
+How would I do things differently:
+  Maybe changing the puzzle in the puzzle game.
+
+How far did I stray from the game design document:
+  I don't think I strayed too far from the game document. I did find a few things that I overlooked that I had to include or work around.
+
+How did I stay on track:
+  I followed my milestones as much as I could.
+  I also frequently keep notes on things I need to look at and fix.
