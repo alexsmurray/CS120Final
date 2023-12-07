@@ -6,6 +6,12 @@ Alexander Murray
 
 background https://creator.nightcafe.studio/studio?open=creation&panelContext=%28jobId%3A3obwZPuQlAGD4ZVIlkUS%29
 button sounds https://freesound.org/search/?f=grouping_pack:%2217749_Do%2C%20re%2C%20mi%2C%20fa%2C%20so%2C%20la%2C%20ti%2C%20do%22&s=Date+added+(newest+first)&g=1
+piano https://opengameart.org/content/simple-piano
+lights https://opengameart.org/content/simple-colored-particle-lights
+Simon buttons https://opengameart.org/content/magic-buttons
+sad loop https://opengameart.org/content/emotional-piano-loop
+Fugue in B minor https://opengameart.org/content/fugue-in-b-minor
+organ notes for button keys A-G recorded by myself through BandLab
 """
 
 import pygame, simpleGE, random, time
@@ -30,7 +36,49 @@ class Game(simpleGE.Scene):
         self.addButton()
         self.addMultiLabel()
         
-        self.sprites = [self.btnPuzzle, self.btnSimon, self.lblTitleSimon, self.multiSimon, self.lblTitle, self.multi, self.btnStart, self.btnStartSimon, self.lblInputSimon, self.lblCurrentScore, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.btnSimonTrial, self.btnGreen, self.btnRed, self.btnYellow, self.btnBlue, self.lblInput, self.lblHint, self.btnCheck, self.btnSimonSolve, self.lblHighscore, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.lblAttempts, self.btnReset, self.btnQuit]
+        self.greenBtn = SimonButtons(self)
+        self.greenBtn.setImage("Magic_button_green.png")
+        self.greenBtn.setSize(90, 90)
+        self.greenBtn.setPosition((150, 240))
+        
+        self.greenLight = SimonButtons(self)
+        self.greenLight.setImage("greenlight.png")
+        self.greenLight.setSize(110, 110)
+        self.greenLight.setPosition((150, 240))
+        
+        self.yellowBtn = SimonButtons(self)
+        self.yellowBtn.setImage("Magic_button_yellow.png")
+        self.yellowBtn.setSize(90, 90)
+        self.yellowBtn.setPosition((250, 240))
+        
+        self.yellowLight = SimonButtons(self)
+        self.yellowLight.setImage("yellowlight.png")
+        self.yellowLight.setSize(110, 110)
+        self.yellowLight.setPosition((250, 240))
+        
+        self.blueBtn = SimonButtons(self)
+        self.blueBtn.setImage("Magic_button_blue.png")
+        self.blueBtn.setSize(90, 90)
+        self.blueBtn.setPosition((350, 240))
+        
+        self.blueLight = SimonButtons(self)
+        self.blueLight.setImage("bluelight.png")
+        self.blueLight.setSize(110, 110)
+        self.blueLight.setPosition((350, 240))
+        
+        self.redBtn = SimonButtons(self)
+        self.redBtn.setImage("Magic_button_red.png")
+        self.redBtn.setSize(90, 90)
+        self.redBtn.setPosition((450, 240))
+        
+        self.redLight = SimonButtons(self)
+        self.redLight.setImage("redlight.png")
+        self.redLight.setSize(110, 110)
+        self.redLight.setPosition((450, 240))
+        
+        self.piano = PianoKeys(self)
+        
+        self.sprites = [self.btnPuzzle, self.btnSimon, self.lblTitleSimon, self.multiSimon, self.lblTitle, self.multi, self.btnStart, self.btnStartSimon, self.lblInputSimon, self.lblCurrentScore, self.btnKeyA, self.btnKeyB, self.btnKeyC, self.btnKeyD, self.btnKeyE, self.btnKeyF, self.btnKeyG, self.piano,  self.btnSimonTrial, self.btnGreen, self.btnRed, self.btnYellow, self.btnBlue, self.lblInput, self.lblHint, self.btnCheck, self.btnSimonSolve, self.lblHighscore, self.btnClear, self.btnClue, self.multiClue, self.btnClueHide, self.greenBtn, self.yellowBtn, self.blueBtn, self.redBtn, self.greenLight, self.yellowLight, self.blueLight, self.redLight, self.lblAttempts, self.btnReset, self.btnQuit]
         self.lblTitle.hide()
         self.btnStart.hide()
         self.multi.hide()
@@ -63,6 +111,16 @@ class Game(simpleGE.Scene):
         self.lblHighscore.hide()
         self.lblCurrentScore.hide()
         self.btnSimonTrial.hide()
+        self.greenBtn.hide()
+        self.yellowBtn.hide()
+        self.blueBtn.hide()
+        self.redBtn.hide()
+        self.greenLight.hide()
+        self.yellowLight.hide()
+        self.blueLight.hide()
+        self.redLight.hide()
+        self.piano.hide()
+        
     
         
     def addLabels(self):
@@ -152,38 +210,45 @@ class Game(simpleGE.Scene):
         
         self.btnKeyA = simpleGE.Button()
         self.btnKeyA.text = "A"
+        self.btnKeyASound = simpleGE.Sound("OrganA.wav")
         self.btnKeyA.center = (100, 240)
-        self.btnKeyA.size = (50, 30)
+        self.btnKeyA.size = (30, 160)
         
         self.btnKeyB = simpleGE.Button()
         self.btnKeyB.text = "B"
+        self.btnKeyBSound = simpleGE.Sound("OrganB.wav")
         self.btnKeyB.center = (175, 240)
-        self.btnKeyB.size = (50, 30)
+        self.btnKeyB.size = (30, 160)
         
         self.btnKeyC = simpleGE.Button()
         self.btnKeyC.text = "C"
+        self.btnKeyCSound = simpleGE.Sound("OrganC.wav")
         self.btnKeyC.center = (250, 240)
-        self.btnKeyC.size = (50, 30)
+        self.btnKeyC.size = (30, 160)
         
         self.btnKeyD = simpleGE.Button()
         self.btnKeyD.text = "D"
+        self.btnKeyDSound = simpleGE.Sound("OrganD.wav")
         self.btnKeyD.center = (325, 240)
-        self.btnKeyD.size = (50, 30)
+        self.btnKeyD.size = (30, 160)
         
         self.btnKeyE = simpleGE.Button()
         self.btnKeyE.text = "E"
+        self.btnKeyESound = simpleGE.Sound("OrganE.wav")
         self.btnKeyE.center = (400, 240)
-        self.btnKeyE.size = (50, 30)
+        self.btnKeyE.size = (30, 160)
         
         self.btnKeyF = simpleGE.Button()
         self.btnKeyF.text = "F"
+        self.btnKeyFSound = simpleGE.Sound("OrganF.wav")
         self.btnKeyF.center = (475, 240)
-        self.btnKeyF.size = (50, 30)
+        self.btnKeyF.size = (30, 160)
         
         self.btnKeyG = simpleGE.Button()
         self.btnKeyG.text = "G"
+        self.btnKeyGSound = simpleGE.Sound("OrganG.wav")
         self.btnKeyG.center = (550, 240)
-        self.btnKeyG.size = (50, 30)
+        self.btnKeyG.size = (30, 160)
         
         self.btnGreen = simpleGE.Button()
         self.btnGreen.text = "Green"
@@ -282,12 +347,25 @@ class Game(simpleGE.Scene):
             time.sleep(.75)
             if solution2[x] == "G":
                 self.btnGreenSound.play()
+                #self.greenLight.show()
+                #self.greenLight.update()
+                #time.sleep(2)
+                #self.greenLight.hide()
             if solution2[x] == "Y":
                 self.btnYellowSound.play()
+                #self.yellowLight.show()
+                #time.sleep(2)
+                #self.yellowLight.hide()
             if solution2[x] == "B":
                 self.btnBlueSound.play()
+                #self.blueLight.show()
+                #time.sleep(2)
+                #self.blueLight.hide()
             if solution2[x] == "R":
                 self.btnRedSound.play()
+                #self.redLight.show()
+                #time.sleep(2)
+                #self.redLight.hide()
         self.simonKey = "".join(solution2)
         print(self.simonKey)
         
@@ -342,11 +420,15 @@ class Game(simpleGE.Scene):
             self.btnClear.show((100,80))
             self.btnSimonSolve.show((540,80))
             self.btnGreen.show((150 ,240))
+            self.greenBtn.show()
             self.btnYellow.show((250 ,240))
+            self.yellowBtn.show()
             self.btnBlue.show((350 ,240))
-            self.btnRed.show((450 ,240))
-            self.btnSimonTrial.show((320,440))
-            #self.createSimon()
+            self.blueBtn.show()
+            self.btnRed.show((450 , 240))
+            self.redBtn.show()
+            self.btnSimonTrial.show((320, 440))
+          
             
         if self.btnSimonTrial.clicked:
             self.btnSimonTrial.hide()
@@ -359,18 +441,19 @@ class Game(simpleGE.Scene):
             self.multi.hide()
             self.screen.blit(self.background, (0,0))
             self.btnQuit.show((540,440))
-            self.btnKeyA.show((100,240))
-            self.btnKeyB.show((175,240))
-            self.btnKeyC.show((250,240))
-            self.btnKeyD.show((325,240))
-            self.btnKeyE.show((400,240))
-            self.btnKeyF.show((475,240))
-            self.btnKeyG.show((550,240))
+            self.btnKeyA.show((190,240))
+            self.btnKeyB.show((235,240))
+            self.btnKeyC.show((280,240))
+            self.btnKeyD.show((320,240))
+            self.btnKeyE.show((365,240))
+            self.btnKeyF.show((405,240))
+            self.btnKeyG.show((450,240))
             self.lblInput.show((320,40))
             self.btnCheck.show((540,40))
             self.btnClear.show((100,40))
             self.lblAttempts.show((540, 80))
             self.btnClue.show((100, 440))
+            self.piano.show()
             self.counter = 3
             self.lblAttempts.text = "Attempts: " + str(self.counter)
             self.createKey()
@@ -379,31 +462,40 @@ class Game(simpleGE.Scene):
             
         if self.inputlen < 4:
             if self.btnKeyA.clicked:
-                #self.btnKeys.itemSound.play()
+                self.btnKeyASound.play()
                 self.lblInput.text += "A"
                 self.inputlen += 1
             if self.btnKeyB.clicked:
                 self.lblInput.text += "B"
+                self.btnKeyBSound.play()
                 self.inputlen += 1
             if self.btnKeyC.clicked:
                 self.lblInput.text += "C"
+                self.btnKeyCSound.play()
                 self.inputlen += 1
             if self.btnKeyD.clicked:
                 self.lblInput.text += "D"
+                self.btnKeyDSound.play()
                 self.inputlen += 1
             if self.btnKeyE.clicked:
                 self.lblInput.text += "E"
+                self.btnKeyESound.play()
                 self.inputlen += 1
             if self.btnKeyF.clicked:
                 self.lblInput.text += "F"
+                self.btnKeyFSound.play()
                 self.inputlen += 1
             if self.btnKeyG.clicked:
                 self.lblInput.text += "G"
+                self.btnKeyGSound.play()
                 self.inputlen += 1
                 
         if self.btnGreen.clicked:
             self.btnGreenSound.play()
+            #self.greenLight.show()
             self.lblInputSimon.text += "G"
+            #time.sleep(.75)
+            #self.greenLight.hide()
         if self.btnYellow.clicked:
             self.btnYellowSound.play()
             self.lblInputSimon.text += "Y"
@@ -424,6 +516,7 @@ class Game(simpleGE.Scene):
                 
                 
         if self.btnReset.clicked:
+            pygame.mixer.music.stop()
             game = Game()
             game.start()
             
@@ -453,8 +546,13 @@ class Game(simpleGE.Scene):
                 self.simonNum += 1
                 self.createSimon()
             else:
-                self.lblHint.show((320, 440))
+                self.lblHint.show((320, 340))
+                self.lblHint.size = (150, 30)
                 self.lblHint.text = "You Lose!"
+                pygame.mixer.music.load("sadloop.wav")
+                pygame.mixer.music.set_volume(.8)
+                pygame.mixer.music.play(-1)
+                self.btnReset.show((320,440))
                 self.saveHighScore()
             
         if self.btnCheck.clicked:
@@ -463,10 +561,24 @@ class Game(simpleGE.Scene):
                 print("You win!")
                 print(self.counter)
                 print(self.lblInput.text)
+                pygame.mixer.music.load("FugueInBMinor.flac")
+                pygame.mixer.music.set_volume(.4)
+                pygame.mixer.music.play(-1)
                 self.lblHint.text = "Congratulations! You win!"
                 self.btnReset.show((320,440))
             elif self.counter == 0:
                 print("You lose!")
+                pygame.mixer.music.load("sadloop.wav")
+                pygame.mixer.music.set_volume(.8)
+                pygame.mixer.music.play(-1)
+                self.btnKeyA.hide()
+                self.btnKeyB.hide()
+                self.btnKeyC.hide()
+                self.btnKeyD.hide()
+                self.btnKeyE.hide()
+                self.btnKeyF.hide()
+                self.btnKeyG.hide()
+                self.btnReset.show((320,440))
                 self.lblHint.text = "You lose. Try again."
             elif self.lblInput.text == "":
                 self.lblHint.text = "No Input. Please try again"
@@ -486,13 +598,14 @@ class Game(simpleGE.Scene):
 class PianoKeys(simpleGE.SuperSprite):
     def __init__(self, scene):
         super().__init__(scene)
-        self.setImage("")
-        self.setSize()
+        self.setImage("Piano2.png")
+        self.setSize(300, 200)
+        self.setPosition((320, 240))
         
+class SimonButtons(simpleGE.SuperSprite):
+    def __init__(self, scene):
+        super().__init__(scene)
         
-        
-        #self.setPosition(())
-        #self.itemSound = simpleGE.Sound("")
         
 
 def main():
